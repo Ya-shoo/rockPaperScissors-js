@@ -10,6 +10,24 @@
 <!-- JS Section -->
     <script>
         console.log("Hello World");
+
+        function getComputerChoice() {
+            const min = 1;
+            const max = 3;
+            let selection = Math.floor(Math.random() * (max - min + 1)) + min;
+
+            console.log("selection value: " + selection);
+            if (selection === 1) {
+                return "rock";
+            } else if (selection === 2) {
+                return "paper";
+            } else if (selection === 3) {
+                return "scissors";
+            }
+            
+        }
+        console.log(getComputerChoice());
+
     </script>
 
 </body>
