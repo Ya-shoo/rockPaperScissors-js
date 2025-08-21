@@ -11,12 +11,18 @@
     <script>
         console.log("Hello World");
 
+        console.log(getHumanChoice());
+        console.log(getComputerChoice());
+        
+
+        // generates random number between 1-3 (including 1 and 3)
+        // then returns rock, paper, or scissors based on the randomly generated number
         function getComputerChoice() {
             const min = 1;
             const max = 3;
             let selection = Math.floor(Math.random() * (max - min + 1)) + min;
 
-            console.log("selection value: " + selection);
+            // console.log("selection value: " + selection);
             if (selection === 1) {
                 return "rock";
             } else if (selection === 2) {
@@ -26,7 +32,12 @@
             }
             
         }
-        console.log(getComputerChoice());
+
+
+        function getHumanChoice() {
+            let userInput = prompt("Choose rock, paper, or scissors!");
+            return userInput;
+        }
 
     </script>
 
