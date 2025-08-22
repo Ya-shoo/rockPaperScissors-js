@@ -9,20 +9,18 @@
     
 <!-- JS Section -->
     <script>
-        console.log("Hai guy!");
-
-        console.log("Lets Play Rock Paper Scissors :p");
+        console.log("hohoho interesting pick :)");
 
         // global game variables
         let humanScore = 0, computerScore = 0;
         const humanSelection = getHumanChoice();
         const computerSelection = getComputerChoice();
 
-        console.log("Computer chose: " + computerSelection);
+        console.log("computer chose: " + computerSelection);
         
         playRound(humanSelection, computerSelection);
 
-        console.log("Current Score is:\n" + "You: " + humanScore + "\n" + "Computer: " + computerScore);
+        console.log("Current Score: " + "You: " + humanScore + " " + "Computer: " + computerScore);
 
 
         // generates random number between 1-3 corresponding to rock paper or scissors
@@ -42,8 +40,8 @@
 
         // prompts user for rock paper or scissors
         function getHumanChoice() {
-            let userInput = prompt("Choose rock, paper, or scissors!");
-            console.log("You chose: " + userInput);
+            let userInput = prompt("Hai guy! Lets Play Rock Paper Scissors :p \n Choose rock, paper, or scissors. \n Don't forget to check the console to see the results!!");
+            console.log("you chose: " + userInput);
             return userInput;
         }
 
