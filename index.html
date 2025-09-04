@@ -6,105 +6,125 @@
     <title>Document</title>
 </head>
 <body>
+
+    <!-- Score and Round Display -->
+        <div class="flex justify-around mb-8 text-lg sm:text-2xl font-bold text-gray-300">
+            <div id="human-score">You: 0</div>
+            <div id="computer-score">Computer: 0</div>
+            <div id="round-count">Round: 0 / 5</div>
+        </div>
+
+    <button id="rock-btn">Rock</button>
+    <button id="paper-btn">Paper</button>
+    <button id="scissors-btn">Scissors</button>
+
+    <!-- Result Display Area -->
+        <div class="bg-gray-800 p-6 rounded-xl shadow-inner border border-gray-700">
+            <p id="result-display" class="text-xl sm:text-2xl font-semibold text-gray-400">
+                Choose your move to start the game!
+            </p>
+        </div>
+
+
+
+
+
+
+
+
+
+
     
 <!-- JS Section -->
     <script>
+
+        //Game Variables
+        let humanScore = 0;
+        let computerScore = 0;
+        let roundCount = 0;
+        let maxRounds = 5;
+
+        //Reference HTML elements
+        const rockBtn = document.getElementById("rock-btn");
+        const paperBtn = document.getElementById("paper-btn");
+        const scissorsBtn = document.getElementById("scissors-btn");
+        const buttons = document.querySelectorAll('button');
+        const resultDisplay = document.getElementById('result-display');
+        const humanScoreDisplay = document.getElementById('human-score');
+        const computerScoreDisplay = document.getElementById('computer-score');
+        const roundCountDisplay = document.getElementById('round-count');
+
         
-        playGame();
 
         // generates random number between 1-3 corresponding to rock paper or scissors
         function getComputerChoice() {
-            const min = 1;
-            const max = 3;
-            let selection = Math.floor(Math.random() * (max - min + 1)) + min;
-            if (selection === 1) {
-                return "rock";
-            } else if (selection === 2) {
-                return "paper";
-            } else if (selection === 3) {
-                return "scissors";
+            const choices = ['rock', 'paper', 'scissors'];
+            const randomIndex = Math.floor(Math.random() * choices.length);
+            return choices[randomIndex];
+        }
+
+        function playRound(humanChoice) {
+            // Check if the game has ended
+            if (roundCount >= maxRounds) {
+                return;
             }
-            
-        }
-        // prompts user for rock paper or scissors
-        function getHumanChoice() {
-            let userInput = prompt("Lets Play Rock Paper Scissors in the console! \n Type rock, paper, or scissors. \n There are 5 rounds.");
-            return userInput;
-        }
 
+            const computerChoice = getComputerChoice();
+            let resultMessage = '';
 
-        function playGame () {
-
-            let humanScore = 0, computerScore = 0;
-
-            let i = 0;
-            while (i < 5) {
-                    // round variables
-                    const humanSelection = getHumanChoice();
-                    const computerSelection = getComputerChoice();
-
-                    console.log("Round - " + (i + 1));
-                    console.log("  computer: " + computerSelection);
-                    console.log("  you: " + humanSelection);
-
-                    playRound(humanSelection, computerSelection);
-                    console.log("- Current Score: " + "You: " + humanScore + " " + "Computer: " + computerScore + "\n");
-                    i++;
-                }
-            
-            console.log("\nFinal Score: " + "You: " + humanScore + " " + "Computer: " + computerScore)
-
-            if (humanScore > computerScore) {
-                console.log("Congratulations! You are the WINNER :D")
-            } else if (humanScore < computerScore) {
-                console.log("Uh-oh you LOST, better luck next time D:")
+            if (humanChoice === computerChoice) {
+                resultMessage = `It's a draw! You both chose ${humanChoice}.`;
+            } else if (
+                (humanChoice === 'rock' && computerChoice === 'scissors') ||
+                (humanChoice === 'paper' && computerChoice === 'rock') ||
+                (humanChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                humanScore++;
+                resultMessage = `You win! ${humanChoice} beats ${computerChoice}.`;
             } else {
-                console.log("Wow its a DRAW! :O")
+                computerScore++;
+                resultMessage = `You lose! ${computerChoice} beats ${humanChoice}.`;
             }
 
-            // calculates a single round of rock paper scissors and returns the result
-            function playRound(humanChoice, computerChoice) {
+            // Increment the round count and update the UI
+            roundCount++;
+            resultDisplay.textContent = resultMessage;
+            humanScoreDisplay.textContent = `You: ${humanScore}`;
+            computerScoreDisplay.textContent = `Computer: ${computerScore}`;
+            roundCountDisplay.textContent = `Round: ${roundCount} / ${maxRounds}`;
 
-                let cleanHumanSelection = humanChoice.toLowerCase();
-
-                if (cleanHumanSelection === "rock") {
-                    if (computerChoice === "rock") {
-                        return console.log("It's a draw! You both chose " + cleanHumanSelection);
-                    } else if (computerChoice === "paper") {
-                        computerScore++;
-                        return console.log("You Lose! paper beats rock")
-                    } else if (computerChoice === "scissors") {
-                        humanScore++;
-                        return console.log("You Win! rock beats scissors")
-                    }
-                }
-
-                if (cleanHumanSelection === "paper") {
-                    if (computerChoice === "rock") {
-                        humanScore++;
-                        return console.log("You Win! paper beats rock");
-                    } else if (computerChoice === "paper") {
-                        return console.log("It's a draw! You both chose " + cleanHumanSelection)
-                    } else if (computerChoice === "scissors") {
-                        computerScore++;
-                        return console.log("You Lose! scissors beats rock")
-                    }
-                }
-
-                if (cleanHumanSelection === "scissors") {
-                    if (computerChoice === "rock") {
-                        computerScore++;
-                        return console.log("You Lose! rock beats scissors");
-                    } else if (computerChoice === "paper") {
-                        humanScore++;
-                        return console.log("You Win! scissors beats paper")
-                    } else if (computerChoice === "scissors") {
-                        return console.log("It's a draw! You both chose " + cleanHumanSelection)
-                    }
-                }
+            // Check if the game is over
+            if (roundCount === maxRounds) {
+                setTimeout(endGame, 500); // Wait 500ms before ending the game
             }
-
         }
+
+        function endGame() {
+            let finalMessage = '';
+            if (humanScore > computerScore) {
+                finalMessage = 'Game Over! You are the WINNER!';
+                resultDisplay.classList.add('text-green-400', 'font-bold');
+            } else if (computerScore > humanScore) {
+                finalMessage = 'Game Over! The computer wins!';
+                resultDisplay.classList.add('text-red-400', 'font-bold');
+            } else {
+                finalMessage = 'Game Over! It\'s a tie!';
+            }
+            resultDisplay.textContent = finalMessage;
+
+            // Disable all buttons to prevent further play
+            buttons.forEach(button => {
+                button.disabled = true;
+                button.classList.add('opacity-50', 'cursor-not-allowed');
+            });
+        }
+
+         // Event listeners for each button
+        rockBtn.addEventListener('click', () => playRound('rock'));
+        paperBtn.addEventListener('click', () => playRound('paper'));
+        scissorsBtn.addEventListener('click', () => playRound('scissors'));
+        
+
     </script>
 
 </body>
